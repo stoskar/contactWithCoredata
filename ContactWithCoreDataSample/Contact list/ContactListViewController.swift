@@ -7,16 +7,41 @@
 //
 
 import UIKit
+import CoreData
 
 class ContactListViewController: UIViewController {
 
     @IBOutlet weak var contactTblView: UITableView!
-  
+    var contact:[Contacts]? = nil
+
     override func viewDidLoad() {
         super.viewDidLoad()
 
         // Do any additional setup after loading the view.
+         contact = CoreDataHandler.fetchObject()
     }
   
+}
 
+extension ContactListViewController:UITableViewDataSource{
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return contact!.count
+    }
+
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        let cell = tableView.dequeueReusableCell(withIdentifier: "contactCell", for: indexPath)
+        
+        let contactDetiles = contact![indexPath.row]
+        let firstname = contactDetiles.first_name
+        let number = contactDetiles.mob_number
+        let image = contactDetiles.contact_image
+
+        cell.detailTextLabel?.text = String(describing: firstname)
+        cell.textLabel?.text = String(describing: number)
+        cell.imageView?.image = UIImage(data: image!)
+        
+        return cell
+    }
+  
 }

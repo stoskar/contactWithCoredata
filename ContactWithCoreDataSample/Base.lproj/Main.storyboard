@@ -47,7 +47,7 @@
                             <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="CUc-NC-ayZ">
                                 <rect key="frame" x="0.0" y="64" width="320" height="504"/>
                                 <subviews>
-                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="7C6-1V-QzZ">
+                                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Profile.png" translatesAutoresizingMaskIntoConstraints="NO" id="7C6-1V-QzZ">
                                         <rect key="frame" x="100" y="20" width="120" height="120"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="120" id="Yg4-F6-uWs"/>
@@ -179,7 +179,13 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="q0J-wr-fqj"/>
                     </view>
-                    <navigationItem key="navigationItem" id="72H-Xq-haE"/>
+                    <navigationItem key="navigationItem" id="72H-Xq-haE">
+                        <barButtonItem key="rightBarButtonItem" title="All Contact" id="d4L-Zb-zmR">
+                            <connections>
+                                <segue destination="dUr-gH-yti" kind="show" id="4MY-v4-7vB"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                     <connections>
                         <outlet property="emailtextField" destination="4xv-I1-Ecv" id="W8b-AP-Od0"/>
                         <outlet property="firsttextField" destination="hxU-Qc-ZbJ" id="iHP-n7-k7P"/>
@@ -201,8 +207,18 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="pIU-cH-yJ8">
-                                <rect key="frame" x="0.0" y="20" width="320" height="548"/>
+                                <rect key="frame" x="0.0" y="64" width="320" height="504"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                <prototypes>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" preservesSuperviewLayoutMargins="YES" selectionStyle="default" indentationWidth="10" reuseIdentifier="contactCell" id="soR-bx-JaC">
+                                        <rect key="frame" x="0.0" y="28" width="320" height="44"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" preservesSuperviewLayoutMargins="YES" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="soR-bx-JaC" id="G0M-f0-FnX">
+                                            <rect key="frame" x="0.0" y="0.0" width="320" height="43.5"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                </prototypes>
                                 <connections>
                                     <outlet property="dataSource" destination="dUr-gH-yti" id="G6l-u2-pK8"/>
                                     <outlet property="delegate" destination="dUr-gH-yti" id="Wpk-ir-p5J"/>
@@ -311,4 +327,7 @@
             <point key="canvasLocation" x="2015.625" y="132.04225352112675"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="Profile.png" width="750" height="1334"/>
+    </resources>
 </document>

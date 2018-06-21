@@ -9,9 +9,9 @@
 import UIKit
 import CoreData
 
-class AddContactViewController: UIViewController,UIImagePickerControllerDelegate {
+class AddContactViewController: UIViewController,UIImagePickerControllerDelegate,UINavigationControllerDelegate {
     
-    var contact:[Contacts]? = nil
+    
     
     
     @IBOutlet weak var imageView: UIImageView!
@@ -24,28 +24,32 @@ class AddContactViewController: UIViewController,UIImagePickerControllerDelegate
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        
-        //Save, fetch, single delete and clean delete operation
-        
-        contact = CoreDataHandler.fetchObject()
-        print("Before Single Delete")
-        for i in contact! {
-            print(i.first_name!)
-        }
-        
-        
-      //  CoreDataHandler.saveObject(firstname: "asf", lastname: "fvew", email: "wfwf", mobileNo: "wefwq", contactimage:"as")
-        
+
         let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(imageTapped(tapGestureRecognizer:)))
         imageView.isUserInteractionEnabled = true
         imageView.addGestureRecognizer(tapGestureRecognizer)
     
     }
-   
+    
+    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
+        dismiss(animated: true, completion: nil)
+    }
+    
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
+        let image = info[UIImagePickerControllerOriginalImage] as! UIImage
+        imageView.image = image
+        
+        dismiss(animated: true, completion: nil)
+    }
+    
     @objc func imageTapped(tapGestureRecognizer: UITapGestureRecognizer)
     {
-        let tappedImage = tapGestureRecognizer.view as! UIImageView
+      //  let tappedImage = tapGestureRecognizer.view as! UIImageView
         
+        let controller = UIImagePickerController()
+        controller.delegate = self
+        controller.sourceType = .photoLibrary
+        present(controller, animated: true, completion: nil)
         // Your action
     }
     
@@ -58,7 +62,7 @@ class AddContactViewController: UIViewController,UIImagePickerControllerDelegate
         let mobileNo = mobileNumberTextField.text
         var imgData = NSData()
         
-        if let img = UIImage(named: "Profile.png") {
+        if let img = imageView.image {
             imgData = (UIImagePNGRepresentation(img) as NSData?)!
         }
         
@@ -67,6 +71,7 @@ class AddContactViewController: UIViewController,UIImagePickerControllerDelegate
         if saveData{
             print("data save")
             
+           // self.performSegue(withIdentifier: "detailSegue", sender: self)
             
         }
         else{
