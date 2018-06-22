@@ -37,8 +37,8 @@ extension ContactListViewController:UITableViewDataSource{
         let number = contactDetiles.mob_number
         let image = contactDetiles.contact_image
 
-        cell.detailTextLabel?.text = String(describing: firstname)
-        cell.textLabel?.text = String(describing: number)
+        cell.detailTextLabel?.text = String(describing: number!)
+        cell.textLabel?.text = String(describing: firstname!)
         cell.imageView?.image = UIImage(data: image!)
         
         return cell
