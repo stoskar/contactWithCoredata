@@ -21,6 +21,8 @@ class AddContactViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+       // CoreDataHandler.cleanDelete()
+        
         let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(imageTapped(tapGestureRecognizer:)))
         imageView.isUserInteractionEnabled = true
         imageView.addGestureRecognizer(tapGestureRecognizer)
@@ -39,7 +41,7 @@ class AddContactViewController: UIViewController {
     
     @IBAction func saveBtnAction(_ sender: UIButton) {
         
-        if isValidName(firsttextField.text!) && isValidName(lasttextField.text!) && isValidPhoneNumber(mobileNumberTextField.text!) && isValidEmailAddress(emailtextField.text!) && (imageView.image != nil) && CoreDataHandler.checkIfContactIsExist(mobileNumber: mobileNumberTextField.text!) {
+        if isValidName(firsttextField.text!) && (lasttextField.text?.isValidName())! && isValidPhoneNumber(mobileNumberTextField.text!) && isValidEmailAddress(emailtextField.text!) && (imageView.image != nil) && CoreDataHandler.checkIfContactIsExist(mobileNumber: mobileNumberTextField.text!) {
             
             var imgData = NSData()
             
@@ -72,6 +74,25 @@ class AddContactViewController: UIViewController {
         
     }
     
+   
+    func showToast(message : String) {
+        
+        let toastLabel = UILabel(frame: CGRect(x: self.view.frame.size.width/2 - 75, y: self.view.frame.size.height-100, width: 150, height: 35))
+        toastLabel.backgroundColor = UIColor.black.withAlphaComponent(0.6)
+        toastLabel.textColor = UIColor.white
+        toastLabel.textAlignment = .center;
+        toastLabel.font = UIFont(name: "Montserrat-Light", size: 12.0)
+        toastLabel.text = message
+        toastLabel.alpha = 1.0
+        toastLabel.layer.cornerRadius = 10;
+        toastLabel.clipsToBounds  =  true
+        self.view.addSubview(toastLabel)
+        UIView.animate(withDuration: 4.0, delay: 0.1, options: .curveEaseOut, animations: {
+            toastLabel.alpha = 0.0
+        }, completion: {(isCompleted) in
+            toastLabel.removeFromSuperview()
+        })
+    } 
 }
 
 extension AddContactViewController:UIImagePickerControllerDelegate,UINavigationControllerDelegate{
@@ -190,6 +211,33 @@ extension AddContactViewController{
                 let alert = UIAlertController(title: "Alert", message: "Plase enter valid mobile no", preferredStyle: UIAlertControllerStyle.alert)
                 alert.addAction(UIAlertAction(title: "ok", style: UIAlertActionStyle.default, handler: nil))
                 self.present(alert, animated: true, completion: nil)
+            }
+            
+        } catch let error as NSError {
+            print("invalid regex: \(error.localizedDescription)")
+            returnValue = false
+        }
+        
+        return  returnValue
+    }
+    
+}
+
+extension String {
+    
+    func isValidName() -> Bool {
+        
+        var returnValue = true
+        let mobileRegEx =  "[A-Za-z]{2}"  // "^[A-Z0-9a-z.-_]{5}$"
+        
+        do {
+            let regex = try NSRegularExpression(pattern: mobileRegEx)
+            //let nsString = self
+            let results = regex.matches(in: self, range: NSRange(location: 0, length: self.count))
+            
+            if results.count == 0
+            {
+                returnValue = false
             }
             
         } catch let error as NSError {

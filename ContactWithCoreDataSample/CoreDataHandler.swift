@@ -92,7 +92,6 @@ class CoreDataHandler: NSObject {
     
     
     class func checkIfContactIsExist(mobileNumber:String) -> Bool{
-        
         let context = getContext()
         let fetchRequest:NSFetchRequest<Contacts> = Contacts.fetchRequest()
         var contacts1:[Contacts]? = nil
@@ -107,15 +106,8 @@ class CoreDataHandler: NSObject {
             print(error)
         }
         
-        return (contacts1?.count)! < 0
+        return (contacts1?.count)! == 0
     }
+    
+    
 }
-
-
-
-
-
-
-
-
-
