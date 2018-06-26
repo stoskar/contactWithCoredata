@@ -21,7 +21,7 @@ class CoreDataHandler: NSObject {
         let context = getContext()
         let entity = NSEntityDescription.entity(forEntityName: "Contacts", in: context)
         let manageObject = NSManagedObject(entity: entity!, insertInto: context)
-
+        
         manageObject.setValue(mobileNo, forKey: "mob_number")
         manageObject.setValue(lastname, forKey: "last_name")
         manageObject.setValue(firstname, forKey: "first_name")
@@ -36,21 +36,19 @@ class CoreDataHandler: NSObject {
         }
     }
     
-
-    
     class func fetchObject() -> [Contacts]? {
         let context = getContext()
         var contacts:[Contacts]? = nil
         do {
-           contacts =  try context.fetch(Contacts.fetchRequest())
+            contacts =  try context.fetch(Contacts.fetchRequest())
             return contacts
         } catch  {
             return nil
         }
     }
-    //MARK: - Video Part 2
-    class func deleteObject(Contacts1: Contacts) -> Bool {
     
+    class func deleteObject(Contacts1: Contacts) -> Bool {
+        
         let context = getContext()
         context.delete(Contacts1)
         
@@ -75,7 +73,6 @@ class CoreDataHandler: NSObject {
         }
     }
     
-    //MARK: - Video Part 3
     class func filterData() -> [Contacts]? {
         let context = getContext()
         let fetchRequest:NSFetchRequest<Contacts> = Contacts.fetchRequest()
@@ -92,7 +89,28 @@ class CoreDataHandler: NSObject {
             return contacts1
         }
     }
+    
+    
+    class func checkIfContactIsExist(mobileNumber:String) -> Bool{
+        
+        let context = getContext()
+        let fetchRequest:NSFetchRequest<Contacts> = Contacts.fetchRequest()
+        var contacts1:[Contacts]? = nil
+        
+        let predicate = NSPredicate(format: "mob_number = %@",mobileNumber)
+        fetchRequest.predicate = predicate
+        
+        do {
+            contacts1  = try context.fetch(fetchRequest)
+        }
+        catch{
+            print(error)
+        }
+        
+        return (contacts1?.count)! < 0
+    }
 }
+
 
 
 

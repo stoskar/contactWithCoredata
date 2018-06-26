@@ -9,11 +9,8 @@
 import UIKit
 import CoreData
 
-class AddContactViewController: UIViewController,UIImagePickerControllerDelegate,UINavigationControllerDelegate {
-    
-    
-    
-    
+class AddContactViewController: UIViewController {
+  
     @IBOutlet weak var imageView: UIImageView!
     @IBOutlet weak var firsttextField: UITextField!
     @IBOutlet weak var lasttextField: UITextField!
@@ -23,24 +20,13 @@ class AddContactViewController: UIViewController,UIImagePickerControllerDelegate
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        //CoreDataHandler.cleanDelete()
-        
+
         let tapGestureRecognizer = UITapGestureRecognizer(target: self, action: #selector(imageTapped(tapGestureRecognizer:)))
         imageView.isUserInteractionEnabled = true
         imageView.addGestureRecognizer(tapGestureRecognizer)
         
     }
-    
-    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
-        dismiss(animated: true, completion: nil)
-    }
-    
-    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
-        let image = info[UIImagePickerControllerOriginalImage] as! UIImage
-        imageView.image = image
-        
-        dismiss(animated: true, completion: nil)
-    }
+ 
     
     @objc func imageTapped(tapGestureRecognizer: UITapGestureRecognizer)
     {
@@ -53,7 +39,7 @@ class AddContactViewController: UIViewController,UIImagePickerControllerDelegate
     
     @IBAction func saveBtnAction(_ sender: UIButton) {
         
-        if isValidName(firsttextField.text!) && isValidName(lasttextField.text!) && isValidPhoneNumber(mobileNumberTextField.text!) && isValidEmailAddress(emailtextField.text!) && (imageView.image != nil) {
+        if isValidName(firsttextField.text!) && isValidName(lasttextField.text!) && isValidPhoneNumber(mobileNumberTextField.text!) && isValidEmailAddress(emailtextField.text!) && (imageView.image != nil) && CoreDataHandler.checkIfContactIsExist(mobileNumber: mobileNumberTextField.text!) {
             
             var imgData = NSData()
             
@@ -76,7 +62,6 @@ class AddContactViewController: UIViewController,UIImagePickerControllerDelegate
                 
                 self.present(alert, animated: true, completion: nil)
                 print("data save")
-                
             }
             else{
                 print("data not save")
@@ -87,6 +72,21 @@ class AddContactViewController: UIViewController,UIImagePickerControllerDelegate
         
     }
     
+}
+
+extension AddContactViewController:UIImagePickerControllerDelegate,UINavigationControllerDelegate{
+    
+    
+    func imagePickerControllerDidCancel(_ picker: UIImagePickerController) {
+        dismiss(animated: true, completion: nil)
+    }
+    
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
+        let image = info[UIImagePickerControllerOriginalImage] as! UIImage
+        imageView.image = image
+        
+        dismiss(animated: true, completion: nil)
+    }
 }
 
 extension AddContactViewController{
@@ -164,7 +164,7 @@ extension AddContactViewController{
             returnValue = false
             
             let alert = UIAlertController(title: "Alert", message: "Pleas enter valide email id", preferredStyle: UIAlertControllerStyle.alert)
-                alert.addAction(UIAlertAction(title: "ok", style: UIAlertActionStyle.default, handler: nil))
+            alert.addAction(UIAlertAction(title: "ok", style: UIAlertActionStyle.default, handler: nil))
             self.present(alert, animated: true, completion: nil)
         }
         
@@ -201,4 +201,5 @@ extension AddContactViewController{
     }
     
 }
+
 
