@@ -8,6 +8,6 @@
         <attribute name="mob_number" optional="YES" attributeType="String" syncable="YES"/>
     </entity>
     <elements>
-        <element name="Contacts" positionX="-18" positionY="-18" width="128" height="118"/>
+        <element name="Contacts" positionX="-18" positionY="-18" width="128" height="120"/>
     </elements>
 </model>

@@ -22,10 +22,10 @@ class CoreDataHandler: NSObject {
         let entity = NSEntityDescription.entity(forEntityName: "Contacts", in: context)
         let manageObject = NSManagedObject(entity: entity!, insertInto: context)
         
-        manageObject.setValue(mobileNo, forKey: "mob_number")
-        manageObject.setValue(lastname, forKey: "last_name")
         manageObject.setValue(firstname, forKey: "first_name")
+        manageObject.setValue(lastname, forKey: "last_name")
         manageObject.setValue(email, forKey: "email")
+        manageObject.setValue(mobileNo, forKey: "mob_number")
         manageObject.setValue(contactimage, forKey: "contact_image")
         
         do {
@@ -50,7 +50,15 @@ class CoreDataHandler: NSObject {
     class func deleteObject(Contacts1: Contacts) -> Bool {
         
         let context = getContext()
-        context.delete(Contacts1)
+        //context.delete(Contacts1)
+        let entity = NSEntityDescription.entity(forEntityName: "Contacts", in: context)
+        let manageObject = NSManagedObject(entity: entity!, insertInto: context)
+        
+        manageObject.setValue(Contacts1.first_name, forKey: "first_name")
+        manageObject.setValue(Contacts1.last_name, forKey: "last_name")
+        manageObject.setValue(Contacts1.email, forKey: "email")
+        manageObject.setValue(Contacts1.mob_number, forKey: "mob_number")
+        manageObject.setValue(Contacts1.contact_image, forKey: "contact_image")
         
         do {
             try context.save()

@@ -17,6 +17,8 @@ class AddContactViewController: UIViewController {
     @IBOutlet weak var emailtextField: UITextField!
     @IBOutlet weak var mobileNumberTextField: UITextField!
     
+    var contactObjectID : Contacts?
+    var isForEdit = Bool()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -29,6 +31,16 @@ class AddContactViewController: UIViewController {
         
     }
  
+    override func viewWillAppear(_ animated: Bool) {
+        
+        if isForEdit {
+            imageView.image = UIImage(data:(contactObjectID?.contact_image)!)
+            firsttextField.text = contactObjectID?.first_name
+            lasttextField.text = contactObjectID?.last_name
+            emailtextField.text = contactObjectID?.email
+            mobileNumberTextField.text = contactObjectID?.mob_number
+        }
+    }
     
     @objc func imageTapped(tapGestureRecognizer: UITapGestureRecognizer)
     {
@@ -41,32 +53,75 @@ class AddContactViewController: UIViewController {
     
     @IBAction func saveBtnAction(_ sender: UIButton) {
         
-        if isValidName(firsttextField.text!) && (lasttextField.text?.isValidName())! && isValidPhoneNumber(mobileNumberTextField.text!) && isValidEmailAddress(emailtextField.text!) && (imageView.image != nil) && CoreDataHandler.checkIfContactIsExist(mobileNumber: mobileNumberTextField.text!) {
+        if isForEdit {
             
-            var imgData = NSData()
-            
-            if let img = imageView.image {
-                imgData = (UIImagePNGRepresentation(img) as NSData?)!
-            }
-            
-            let saveData = CoreDataHandler.saveObject(firstname: firsttextField.text!, lastname: lasttextField.text!, email:emailtextField.text!, mobileNo:mobileNumberTextField.text!, contactimage: imgData)
-            
-            if saveData{
+            if isValidName(firsttextField.text!) && (lasttextField.text?.isValidName())! && isValidPhoneNumber(mobileNumberTextField.text!) && isValidEmailAddress(emailtextField.text!) && (imageView.image != nil) {
                 
-                let alert =  UIAlertController.init(title: "Success", message: "data insert successfully", preferredStyle: UIAlertControllerStyle.alert)
+                var imgData = NSData()
                 
-                alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { (action:UIAlertAction) in
-                    let storybord = UIStoryboard.init(name: "Main", bundle: nil)
-                    let contactlistVC = storybord.instantiateViewController(withIdentifier: "ContactListViewController") as! ContactListViewController
-                    self.navigationController?.pushViewController(contactlistVC, animated: true)
+                if let img = imageView.image {
+                    imgData = (UIImagePNGRepresentation(img) as NSData?)!
+                }
+                
+                contactObjectID?.first_name = firsttextField.text!
+                contactObjectID?.last_name = lasttextField.text!
+                contactObjectID?.contact_image = imgData as Data
+                contactObjectID?.email = emailtextField.text
+                contactObjectID?.mob_number = mobileNumberTextField.text!
+                
+                //let saveData = CoreDataHandler.saveObject(firstname: firsttextField.text!, lastname: lasttextField.text!, email:emailtextField.text!, mobileNo:mobileNumberTextField.text!, contactimage: imgData)
+                let updateData = CoreDataHandler.deleteObject(Contacts1: contactObjectID!)
+                
+                if updateData{
                     
-                }))
+                    let alert =  UIAlertController.init(title: "Success", message: "Update data successfully", preferredStyle: UIAlertControllerStyle.alert)
+                    
+                    alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { (action:UIAlertAction) in
+                        let storybord = UIStoryboard.init(name: "Main", bundle: nil)
+                        let contactlistVC = storybord.instantiateViewController(withIdentifier: "ContactListViewController") as! ContactListViewController
+                        self.navigationController?.pushViewController(contactlistVC, animated: true)
+                        
+                    }))
+                    
+                    self.present(alert, animated: true, completion: nil)
+                    print("data save")
+                }
+                else{
+                    print("data not save")
+                }
                 
-                self.present(alert, animated: true, completion: nil)
-                print("data save")
             }
-            else{
-                print("data not save")
+            
+        }
+        else{
+            if isValidName(firsttextField.text!) && (lasttextField.text?.isValidName())! && isValidPhoneNumber(mobileNumberTextField.text!) && isValidEmailAddress(emailtextField.text!) && (imageView.image != nil) && CoreDataHandler.checkIfContactIsExist(mobileNumber: mobileNumberTextField.text!) {
+                
+                var imgData = NSData()
+                
+                if let img = imageView.image {
+                    imgData = (UIImagePNGRepresentation(img) as NSData?)!
+                }
+                
+                let saveData = CoreDataHandler.saveObject(firstname: firsttextField.text!, lastname: lasttextField.text!, email:emailtextField.text!, mobileNo:mobileNumberTextField.text!, contactimage: imgData)
+                
+                if saveData{
+                    
+                    let alert =  UIAlertController.init(title: "Success", message: "data insert successfully", preferredStyle: UIAlertControllerStyle.alert)
+                    
+                    alert.addAction(UIAlertAction(title: "OK", style: .default, handler: { (action:UIAlertAction) in
+                        let storybord = UIStoryboard.init(name: "Main", bundle: nil)
+                        let contactlistVC = storybord.instantiateViewController(withIdentifier: "ContactListViewController") as! ContactListViewController
+                        self.navigationController?.pushViewController(contactlistVC, animated: true)
+                        
+                    }))
+                    
+                    self.present(alert, animated: true, completion: nil)
+                    print("data save")
+                }
+                else{
+                    print("data not save")
+                }
+                
             }
             
         }
@@ -136,30 +191,6 @@ extension AddContactViewController{
         
         return  returnValue
     }
-    
-    // password validation
-    //    func isValidPassword(_ PasswordString: String) -> Bool {
-    //
-    //        var returnValue = true
-    //        let mobileRegEx =  "[A-Za-z0-9.-_@#$!%&*]{5,15}$"  // "^[A-Z0-9a-z.-_]{5}$"
-    //
-    //        do {
-    //            let regex = try NSRegularExpression(pattern: mobileRegEx)
-    //            let nsString = PasswordString as NSString
-    //            let results = regex.matches(in: PasswordString, range: NSRange(location: 0, length: nsString.length))
-    //
-    //            if results.count == 0
-    //            {
-    //                returnValue = false
-    //            }
-    //
-    //        } catch let error as NSError {
-    //            print("invalid regex: \(error.localizedDescription)")
-    //            returnValue = false
-    //        }
-    //
-    //        return  returnValue
-    //    }
     
     // email validaton
     func isValidEmailAddress(_ emailAddressString: String) -> Bool {
@@ -245,7 +276,6 @@ extension String {
             print("invalid regex: \(error.localizedDescription)")
             returnValue = false
         }
-        
         return  returnValue
     }
     
