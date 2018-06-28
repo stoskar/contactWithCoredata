@@ -45,3 +45,20 @@ extension ContactListViewController:UITableViewDataSource{
     }
   
 }
+
+extension ContactListViewController:UITableViewDelegate{
+    
+    
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        
+       // let indexPath = tableView.indexPathForSelectedRow
+        
+        
+        
+        let storybord = UIStoryboard.init(name: "Main", bundle: nil)
+        let contactDetailVC = storybord.instantiateViewController(withIdentifier: "ContactDetailViewController") as! ContactDetailViewController
+        contactDetailVC.contactObjectID = contact![indexPath.row]
+        self.navigationController?.pushViewController(contactDetailVC, animated: true)
+        
+    }
+}

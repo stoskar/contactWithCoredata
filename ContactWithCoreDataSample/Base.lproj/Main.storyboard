@@ -315,10 +315,10 @@
                         <viewLayoutGuide key="safeArea" id="b6H-df-hfD"/>
                     </view>
                     <connections>
-                        <outlet property="FirstNameLbl" destination="FXv-SB-XnG" id="7CA-E2-bmT"/>
+                        <outlet property="firstNameLbl" destination="FXv-SB-XnG" id="DuM-nf-LPp"/>
                         <outlet property="lastNameLbl" destination="Bgg-R2-Q9J" id="Vya-Yv-2aH"/>
                         <outlet property="mailLbl" destination="eCS-LI-RZ5" id="cEA-Ik-R3R"/>
-                        <outlet property="mobNumberLbl" destination="DuC-e6-PxC" id="wBz-j0-4l1"/>
+                        <outlet property="mobNumberLbl" destination="4Ex-Fj-JkD" id="DKF-4R-0vb"/>
                         <outlet property="profilePic" destination="iHK-DQ-kEt" id="Msx-HU-HRc"/>
                     </connections>
                 </viewController>

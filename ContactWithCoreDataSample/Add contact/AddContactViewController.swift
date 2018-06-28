@@ -126,6 +126,7 @@ extension AddContactViewController{
             if results.count == 0
             {
                 returnValue = false
+                showToast(message: " Enter name ")
             }
             
         } catch let error as NSError {

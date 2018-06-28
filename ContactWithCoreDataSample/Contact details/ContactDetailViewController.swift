@@ -12,15 +12,22 @@ class ContactDetailViewController: UIViewController {
 
     @IBOutlet weak var profilePic: UIImageView!
     
-    @IBOutlet weak var FirstNameLbl: UILabel!
+    @IBOutlet weak var firstNameLbl: UILabel!
     @IBOutlet weak var lastNameLbl: UILabel!
     @IBOutlet weak var mailLbl: UILabel!
-    @IBOutlet var mobNumberLbl: UIView!
+    @IBOutlet weak var mobNumberLbl: UILabel!
+    
+    var contactObjectID = Contacts()
     
     override func viewDidLoad() {
         super.viewDidLoad()
 
         
+        firstNameLbl.text = contactObjectID.first_name
+        lastNameLbl.text = contactObjectID.last_name
+        mailLbl.text = contactObjectID.email
+        mobNumberLbl.text = contactObjectID.mob_number
+        profilePic.image = UIImage(data: contactObjectID.contact_image!)
         // Do any additional setup after loading the view.
     }
 
